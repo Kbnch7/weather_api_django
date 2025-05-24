@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load django_bootstrap5 %}
+
+    {% bootstrap_css %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Погода в городе</h1>
+        <form method="POST" class="mt-3">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;" class="form-group">
+                <input type="text" name="city" class="form-control" placeholder="Введите название города" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Узнать погоду</button>
+        </form>
+
+        {% if weather_data %}
+            {% if weather_data.result %}
+                <h2 class="mt-5">Погода в городе {{ weather_data.city }}</h2>
+                <p>Температура: {{ weather_data.temp }} °C</p>
+                <p>Ощущается как: {{ weather_data.temp_feels_like }} °C</p>
+                <p>Состояние: {{ weather_data.description }}</p>
+                <p>Влажность: {{ weather_data.humidity }}</p>
+            {% else %}
+                <h2 class="mt-5">Город "{{ weather_data.city }}" не найден</h2>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
